@@ -1,0 +1,43 @@
+#+TITLE: Terminal
+#+DATE: [2020-12-23 Sun]
+#+DESCRIPTION:hi
+#+CATEGORY:[html,org]
+#+TAGS: t w
+
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="ovrride.css" />
+* ZSH Commands Cheatsheet, Tips, Tricks, Snippets, & More!
+
+
+** Detach processes
+
+To detach a process running in the foreground use the press {{{btn(Ctrl)}}} + {{{btn(Z)}}}
+this suspends the process. Then run {{{code($ bg)}}} to unsuspend the process and run it in the background.
+
+Another method of accomplishing the same thing is simply by appending an {{{code(&)}}} to the command you use to open your application.
+So for example, let's say we want to open Emacs from our terminal but we want to retain the use of our session. To do this we would
+use this command {{{code($ emacs &)}}} or {{{code($ emacs&)}}}.
+
+
+** Injecting Keystrokes in a script
+
+There are a few different methods of doing this. However, I want to keep it simple and without the use of 3rd party packages/applications.
+All MacOS versions come with AppleScript which gives script kiddies like me, access to a *whole lot* of possibilites. One of those possibilities
+being, keystrokes. Let's say we want our script to inject the keyboard command {{{btn(Ctrl)}}} + {{{btn(z)}}} somewhere in our script, here's
+how we would do that:
+
+Using ~:exports code~
+#+BEGIN_SRC shell :exports code
+#!/bin/sh
+
+function emac() {
+  echo 'Opening emacs'
+  emacs
+  echo 'Suspending emacs'
+  osascript -e 'tell application "System Events" to keystroke "z" using control down'
+  echo 'Emacs suspended succesfully'
+  echo 'Unsuspending emacs and sending the process to run in the background'
+  osascript -e 'tell application "System Events" to keystroke "bg"'
+  echo 'Emacs process succesfully sent to background and started again.'
+}
+
+#+END_SRC

@@ -3,21 +3,19 @@ import { Link, graphql } from "gatsby"
 
 import Bio from "../components/bio"
 import Layout from "../components/layout"
-import Tags from "../components/tags"
 import SEO from "../components/seo"
 import { rhythm, scale } from "../utils/typography"
 
 const BlogPostTemplate = ({ data, pageContext, location }) => {
-  const post = data.orgContent
-  const tags = post.metadata.tags || []
+  const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata.title
-  // const { previous, next } = pageContext
+  const { previous, next } = pageContext
 
   return (
     <Layout location={location} title={siteTitle}>
       <SEO
-        title={post.metadata.title}
-        // description={post.metadata.description || post.excerpt}
+        title={post.frontmatter.title}
+        description={post.frontmatter.description || post.excerpt}
       />
       <article>
         <header>
@@ -27,7 +25,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
               marginBottom: 0,
             }}
           >
-            {post.metadata.title}
+            {post.frontmatter.title}
           </h1>
           <p
             style={{
@@ -36,7 +34,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
               marginBottom: rhythm(1),
             }}
           >
-            {post.metadata.date}
+            {post.frontmatter.date}
           </p>
         </header>
         <section dangerouslySetInnerHTML={{ __html: post.html }} />
@@ -47,7 +45,6 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
         />
         <footer>
           <Bio />
-          <Tags tagsList={tags} />
         </footer>
       </article>
 
@@ -61,60 +58,43 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
             padding: 0,
           }}
         >
-          {/* <li>
+          <li>
             {previous && (
               <Link to={previous.fields.slug} rel="prev">
-                ← {previous.metadata.title}
+                ← {previous.frontmatter.title}
               </Link>
             )}
           </li>
           <li>
             {next && (
               <Link to={next.fields.slug} rel="next">
-                {next.metadata.title} →
+                {next.frontmatter.title} →
               </Link>
             )}
-          </li> */}
+          </li>
         </ul>
       </nav>
     </Layout>
   )
 }
 
-// class BlogPostTemplate extends React.Component {
-//   render() {
-//     const post = this.props.data.orgContent
-//     const { title, date } = post.metadata
-
-//     return (
-//       <Layout>
-//         <center>
-//           <h1>{title}</h1>
-//           <small>{date}</small>
-//         </center>
-//         <div dangerouslySetInnerHTML={{ __html: post.html }} />
-//       </Layout>
-//     )
-//   }
-// }
-
 export default BlogPostTemplate
 
 export const pageQuery = graphql`
-  query BlogPostQuery($id: String!) {
+  query BlogPostBySlug($slug: String!) {
     site {
       siteMetadata {
         title
       }
     }
-    orgContent(id: { eq: $id }) {
+    markdownRemark(fields: { slug: { eq: $slug } }) {
       id
+      excerpt(pruneLength: 160)
       html
-      metadata {
+      frontmatter {
         title
-        date(formatString: "MMMM DD, YY")
+        date(formatString: "MMMM DD, YYYY")
         description
-        tags
       }
     }
   }

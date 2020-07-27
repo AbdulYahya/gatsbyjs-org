@@ -27,6 +27,13 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-transformer-orga`,
+      options: {
+        // if you don't want server side prism code highlight
+        // noHighlight: true,
+      }
+    },
+    {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [

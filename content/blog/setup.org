@@ -1,0 +1,15 @@
+#+TITLE: yoooo
+#+DATE: [2020-07-23 Sun]
+#+DESCRIPTION:hi
+#+CATEGORY:[html,org]
+#+TAGS: t w
+* Mac Setup
+
+
+** Terminal Setup
+
+*** iTerm2
+
+**** MacOS Keybindings
+
+https://coderwall.com/p/ds2dha/word-line-deletion-and-navigation-shortcuts-in-iterm2
